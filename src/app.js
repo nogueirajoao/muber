@@ -6,8 +6,11 @@ const mongoose = require('mongoose');
 const app = express();
 
 mongoose.Promise = global.Promise;
+console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV !== 'test') {
-    mongoose.connect('mongodb://localhost/muber', { useNewUrlParser: true });
+    mongoose.connect('mongodb://localhost/muber', { useNewUrlParser: true, useFindAndModify: false });
+    mongoose.connection.collections.drivers.createIndex({ 'geometry.coordinates': '2dsphere' })
 }
 
 app.use(bodyParser.json());
